@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Puzzle</title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+
+        --col1: #f6f1f1;
+        --col2: #19a7ce;
+        --col3: #146c94;
+        --col4: #000000;
+        background: var(--col1);
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+      }
+      .navbar {
+        height: 10%;
+        width: 100%;
+        background: var(--col3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--col1);
+      }
+      .navbar > * {
+        width: 50%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+      }
+      .navbar > .part1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .navbar .part1 .inner {
+        width: 60%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+      .navbar .part1 .inner a {
+        text-decoration: none;
+        color: var(--col1);
+        /* font-weight: bold; */
+        font-size: 23px;
+        border-bottom: 2px solid transparent;
+        transition: all;
+        transition-duration: 0.4s;
+      }
+      .navbar .part1 .inner a:hover {
+        border-color: var(--col1);
+        padding: 5px 0px;
+      }
+      .navbar > .part2 {
+        text-align: center;
+        justify-content: center;
+      }
+
+      .body {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-content: center;
+
+        height: 90%;
+        width: 100%;
+
+        overflow: hidden;
+      }
+
+      .part1 {
+        /* border-right: 2px solid var(--col2); */
+      }
+
+      .middle {
+        position: absolute;
+        top: 0px;
+        left: 50vw;
+      }
+
+      #board {
+        /* width: 395px;
+  height: 395px; */
+
+        width: 70%;
+        /* height: 500px; */
+
+        margin: 0 auto;
+        /* display: flex;
+  flex-wrap: wrap; */
+
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+      }
+
+      #board img {
+        width: 100%;
+        height: 100%;
+        /* width: 79px;
+  height: 79px; */
+        /* border: 0.5px solid lightblue; */
+        border: 0.5px solid var(--col2);
+      }
+
+      #pieces {
+        width: 50%;
+        /* height: 150px; */
+        border: 2px solid var(--col3);
+
+        margin: 0 auto;
+        /* display: flex;
+  flex-wrap: wrap; */
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+      }
+
+      #pieces img {
+        /* width: 79px;
+  height: 79px; */
+        width: 100%;
+        height: 100%;
+        border: 0.5px solid var(--col3);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="part1">
+        <div class="inner">
+          <a href="home">Home</a>
+          <a href="">Restart</a>
+          <a href="logout">Logout</a>
+        </div>
+      </div>
+      <div class="part2">
+        <h2>Turns: <span id="turns">0</span></h2>
+      </div>
+    </div>
+    <div class="body">
+      <div class="part1">
+        <div id="pieces"></div>
+      </div>
+
+      <!-- <div class="middle">
+        <h2>Turns: <span id="turns">0</span></h2>
+      </div> -->
+      <div class="part2">
+        <div id="board"></div>
+      </div>
+    </div>
+
+    <script>
+      var rows = 5;
+      var columns = 5;
+
+      var currTile;
+      var otherTile;
+
+      var turns = 0;
+
+      window.onload = function () {
+        //initialize the 5x5 board
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < columns; c++) {
+            //<img>
+            let tile = document.createElement("img");
+            tile.src = "../static/images/blank.jpg";
+
+            //DRAG FUNCTIONALITY
+            tile.addEventListener("dragstart", dragStart); //click on image to drag
+            tile.addEventListener("dragover", dragOver); //drag an image
+            tile.addEventListener("dragenter", dragEnter); //dragging an image into another one
+            tile.addEventListener("dragleave", dragLeave); //dragging an image away from another one
+            tile.addEventListener("drop", dragDrop); //drop an image onto another one
+            tile.addEventListener("dragend", dragEnd); //after you completed dragDrop
+
+            document.getElementById("board").append(tile);
+          }
+        }
+
+        //pieces
+        let pieces = [];
+        for (let i = 1; i <= rows * columns; i++) {
+          pieces.push(i.toString()); //put "1" to "25" into the array (puzzle images names)
+        }
+        pieces.reverse();
+        for (let i = 0; i < pieces.length; i++) {
+          let j = Math.floor(Math.random() * pieces.length);
+
+          //swap
+          let tmp = pieces[i];
+          pieces[i] = pieces[j];
+          pieces[j] = tmp;
+        }
+
+        for (let i = 0; i < pieces.length; i++) {
+          let tile = document.createElement("img");
+          tile.src = "../static/images/" + pieces[i] + ".jpg";
+
+          //DRAG FUNCTIONALITY
+          tile.addEventListener("dragstart", dragStart); //click on image to drag
+          tile.addEventListener("dragover", dragOver); //drag an image
+          tile.addEventListener("dragenter", dragEnter); //dragging an image into another one
+          tile.addEventListener("dragleave", dragLeave); //dragging an image away from another one
+          tile.addEventListener("drop", dragDrop); //drop an image onto another one
+          tile.addEventListener("dragend", dragEnd); //after you completed dragDrop
+
+          document.getElementById("pieces").append(tile);
+        }
+      };
+
+      //DRAG TILES
+      function dragStart() {
+        currTile = this; //this refers to image that was clicked on for dragging
+      }
+
+      function dragOver(e) {
+        e.preventDefault();
+      }
+
+      function dragEnter(e) {
+        e.preventDefault();
+      }
+
+      function dragLeave() {}
+
+      function dragDrop() {
+        otherTile = this; //this refers to image that is being dropped on
+      }
+
+      function dragEnd() {
+        if (currTile.src.includes("blank")) {
+          return;
+        }
+        let currImg = currTile.src;
+        let otherImg = otherTile.src;
+        currTile.src = otherImg;
+        otherTile.src = currImg;
+
+        turns += 1;
+        document.getElementById("turns").innerText = turns;
+      }
+    </script>
+  </body>
+</html>

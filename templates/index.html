@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eLitmus Puzzles Assignment</title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+
+        --col1: #f6f1f1;
+        --col2: #19a7ce;
+        --col3: #146c94;
+        --col4: #000000;
+        background: var(--col1);
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+      }
+      .navbar {
+        height: 10%;
+        width: 100%;
+        background: var(--col3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--col1);
+      }
+      .navbar > * {
+        width: 50%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+      }
+      .navbar > .part1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .navbar .part1 .inner {
+        width: 60%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+      .navbar .part1 .inner a {
+        text-decoration: none;
+        color: var(--col1);
+        /* font-weight: bold; */
+        font-size: 23px;
+        border-bottom: 2px solid transparent;
+        transition: all;
+        transition-duration: 0.4s;
+      }
+      .navbar .part1 .inner a:hover {
+        border-color: var(--col1);
+        padding: 5px 0px;
+      }
+      .navbar > .part2 {
+        text-align: center;
+        justify-content: center;
+      }
+
+      .body {
+        height: 90%;
+        width: 80%;
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 2%;
+      }
+      .body a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        text-decoration: none;
+        color: var(--col3);
+
+        overflow: hidden;
+      }
+      .body a:hover img {
+        transform: scale(0.97);
+        transition: all;
+        transition-duration: 0.3s;
+      }
+      .body a img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="part1">
+        <div class="inner">
+          <a href="">Home</a>
+          <a href="">About</a>
+          <a href="logout">Logout</a>
+        </div>
+      </div>
+      <div class="part2"></div>
+    </div>
+
+    <div class="body">
+      <a href="./puzzle1">
+        <img src="../static/images/imagePuzzle.jpg" alt="" /> <br />
+        <h2>Image Puzzle</h2>
+      </a>
+      <a href="./puzzle2">
+        <img src="../static/images/8Puzzle.png" alt="" /><br />
+        <h2>8 Puzzle</h2>
+      </a>
+      <a href="./puzzle3">
+        <img src="../static/images/numberPuzzle.png" alt="" /><br />
+        <h2>Numbers Puzzle</h2>
+      </a>
+    </div>
+  </body>
+</html>
